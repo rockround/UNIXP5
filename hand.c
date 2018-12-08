@@ -4,8 +4,8 @@
 #include <getopt.h>
 #include <stdlib.h>
 
-int initTool();
-void finalizeTool();
+static int initTool();
+static void finalizeTool();
 int getRDM();
 
 gsl_rng_type *_gsl_rng_type;
@@ -38,15 +38,15 @@ int main(int argc,char **argv ){
     percent = atoi(optarg);
     break;
    default:
-     printf("Invalid Syntax%d:\n",atoi(optarg));
+     printf("Invalid Syntax",atoi(optarg));
      return 1;
     }
   }
  assert(initTool()==0);
  if(getRDM()<=percent)
-  printf("Success\n");
+  printf("Success");
  else
-  printf("Fail\n");
+  printf("Fail");
  finalizeTool();
  exit(0);
 }
