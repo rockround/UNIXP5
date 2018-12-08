@@ -1,39 +1,15 @@
-#include <gsl/gsl_rng.h>
 #include <stdio.h>
 #include <assert.h>
 #include <getopt.h>
 #include <stdlib.h>
-
-int initTool();
-void finalizeTool();
-double getRDM();
-
-gsl_rng_type *_gsl_rng_type;
-gsl_rng *_gsl_rng;
-
-int initTool(){
-	_gsl_rng = gsl_rng_alloc(gsl_rng_mt19937);
-
-	if(_gsl_rng == NULL)
-		return 1;
-	else
-		return 0;
-}
-
-void finalizeTool(){
-	gsl_rng_free(_gsl_rng);
-	return;
-}
-
-double getRDM(){
-	return(gsl_rng_uniform(_gsl_rng));
-}
+#include <unistd.h>
 int main(int argc,char **argv ){
  int i;
  int percent = 0;
  int trials = 0;
  int option = 0;
  int verbose =0;
+ int pype[2];
  while((option=getopt(argc,argv,"v::p:"))!=-1){
   switch(option){
    case 'v':
@@ -48,21 +24,33 @@ int main(int argc,char **argv ){
     }
   }
   if(optind<argc){
-  // while(optind<argc)
-  //  printf("%s ",argv[optind++]);
-  // printf("\n");
      trials = atoi(argv[optind]);
    }else{
     return 1;
    }
- const int NUM_ITERS=10;
  printf("Percent:%d\t,Trials:%d\t,isVerbose:%d\n",percent,trials,verbose);
- assert(initTool()==0);
- 
- for(i=0;i<NUM_ITERS;i++)
-  printf("Random Number = %f\n",getRDM());
- 
- finalizeTool();
+ if(pipe(pype)==-1){
+   printf("Bad Pipe\n");
+   return 1;
+ }
+ for(i=0;i<trials;i++){
+  int peyed = fork();
+  if(peyed==0){
+   close(pype[0]);
+   dup2(pype[1],1);
+   execlp("Hand","Hand","-p","100");
+   //system("./Hand -p 100");
+  }else{
+   close(pype[1]);
+   char reading_buf[1];
+   while(read(pype[0],reading_buf,1)>0)
+   {
+   	write(1,reading_buf,1);
+   }
+   close(pype[0]);
+   wait();
+  }
+}
  
  return 0;
 

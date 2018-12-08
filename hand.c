@@ -48,7 +48,5 @@ int main(int argc,char **argv ){
  else
   printf("Fail");
  finalizeTool();
- 
- return 0;
-
+ exit(0);
 }
