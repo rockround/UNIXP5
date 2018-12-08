@@ -5,18 +5,18 @@
 #include <unistd.h>
 int main(int argc,char **argv ){
  int i;
- int percent = 0;
  int trials = 0;
  int option = 0;
  int verbose =0;
  int pype[2];
+ char *percent;
  while((option=getopt(argc,argv,"v::p:"))!=-1){
   switch(option){
    case 'v':
     verbose =1;
     break;
    case 'p':
-    percent = atoi(optarg);
+    percent = optarg;
     break;
    default:
      printf("Invalid Syntax%d:\n",atoi(optarg));
@@ -28,7 +28,7 @@ int main(int argc,char **argv ){
    }else{
     return 1;
    }
- printf("Percent:%d\t,Trials:%d\t,isVerbose:%d\n",percent,trials,verbose);
+ printf("Percent:%s\t,Trials:%d\t,isVerbose:%d\n",percent,trials,verbose);
  if(pipe(pype)==-1){
    printf("Bad Pipe\n");
    return 1;
@@ -38,7 +38,8 @@ int main(int argc,char **argv ){
   if(peyed==0){
    close(pype[0]);
    dup2(pype[1],1);
-   execlp("Hand","Hand","-p","100");
+   execlp("./Hand","Hand","-p",percent,NULL);
+   wait();
    //system("./Hand -p 100");
   }else{
    close(pype[1]);
@@ -48,7 +49,6 @@ int main(int argc,char **argv ){
    	write(1,reading_buf,1);
    }
    close(pype[0]);
-   wait();
   }
 }
  

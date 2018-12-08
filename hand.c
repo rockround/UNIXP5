@@ -44,9 +44,9 @@ int main(int argc,char **argv ){
   }
  assert(initTool()==0);
  if(getRDM()<=percent)
-  printf("Success");
+  printf("Success\n");
  else
-  printf("Fail");
+  printf("Fail\n");
  finalizeTool();
  exit(0);
 }
