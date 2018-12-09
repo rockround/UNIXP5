@@ -4,6 +4,13 @@ Bonus problems done:
 
 Bonus 0 was done, -t parameter is selectable.
 
+Bonus 3:
+
+I would verify that my code is obtaining the correct results by testing the algorithm many times with sample sizes > 30 such that I can use the central limit theorem, and then use a z-test to determine the significance of any differences observed in results from the expected values. 
+
+I would test the likelihood using 50% as the probability parameter, and use 400 samples. I will then see what my sample expected value is (the resulting distribution of successes and failures). 
+
+I would then calculate the standard error, using sqrt(npq) as my standard deviation, and calculate the z-score of my results. I will then calculate the probability of getting this result after doing many tests, and determine if the p-value is significant enough to reject the null hypothesis of a random source. 
 
 
 For the grader:
