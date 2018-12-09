@@ -13,7 +13,7 @@ gsl_rng *_gsl_rng;
 
 int initTool(){
 	_gsl_rng = gsl_rng_alloc(gsl_rng_mt19937);
-
+	gsl_rng_set(_gsl_rng,(long)getpid());
 	if(_gsl_rng == NULL)
 		return 1;
 	else
