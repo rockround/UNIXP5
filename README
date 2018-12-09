@@ -1,0 +1,13 @@
+Homework 5 text
+
+Bonus problems done:
+
+Bonus 0 was done, -t parameter is selectable.
+
+
+
+For the grader:
+
+The seed generation used is based on child process PID to ensure that rapid execution is not a problem (time based seeding) and that in general all seeds are unique (since all PIDs are unique).
+
+
