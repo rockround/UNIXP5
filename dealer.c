@@ -13,7 +13,8 @@ int main(int argc,char **argv ){
  int pype[2];
  int paasento;
  char *percent;
- while((option=getopt(argc,argv,"v::p:h::"))!=-1){
+ int concurrent;
+ while((option=getopt(argc,argv,"v::p:h::t::"))!=-1){
   switch(option){
    case 'v':
     verbose =1;
@@ -21,7 +22,7 @@ int main(int argc,char **argv ){
    case 'p':
    paasento = atoi(optarg);
    if(paasento>100){
-	printf("Invalid input for percent, number must be an integer between 0 and 100\n");
+	fprintf(stderr,"Invalid input for percent, number must be an integer between 0 and 100\n");
 	return 1;
    }else{
     percent = optarg;
@@ -30,25 +31,32 @@ int main(int argc,char **argv ){
    case 'h':
     printf("Use -v for verbose output, -p followed by an integer (0-100) percent probability. End output with the number of trials desired.\n");
     return 1;
+   case 't':
+    concurrent=atoi(optarg);
+    if(concurrent>8){
+	fprintf(stderr,"Maximum allowed processes is 8!\n");
+	return 1;
+    }
+    break;
    case '?':
-     printf("Invalid input, see -h for help on syntax\n");
+     fprintf(stderr,"Invalid input, see -h for help on syntax\n");
      return 1;
     }
   }
   if(optind<argc){
      trials = atoi(argv[optind]);
      if(trials==0){
-       printf("Invalid input: Enter a valid integer for the number of trials, greater than 0 at the end\n");
+       fprintf(stderr,"Invalid input: Enter a valid integer for the number of trials, greater than 0 at the end\n");
        return 1;
      }
    }else{
-    printf("Invalid input: You must enter the number of trials greater than 0 at the end of your argument\n");
+    fprintf(stderr,"Invalid input: You must enter the number of trials greater than 0 at the end of your argument\n");
     return 1;
    }
  printf("\n");
  for(i=0;i<trials;i++){
  if(pipe(pype)==-1){
-   printf("Bad Pipe\n");
+   fprintf(stderr,"Bad Pipe\n");
    return 1;
  }
   int peyed = fork();
