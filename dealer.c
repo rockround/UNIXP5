@@ -37,7 +37,12 @@ int main(int argc,char **argv ){
   }
   if(optind<argc){
      trials = atoi(argv[optind]);
+     if(trials==0){
+       printf("Invalid input: Enter a valid integer for the number of trials, greater than 0 at the end\n");
+       return 1;
+     }
    }else{
+    printf("Invalid input: You must enter the number of trials greater than 0 at the end of your argument\n");
     return 1;
    }
  printf("\n");
