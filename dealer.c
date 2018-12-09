@@ -13,8 +13,8 @@ int main(int argc,char **argv ){
  int pype[2];
  int paasento;
  char *percent;
- int concurrent;
- while((option=getopt(argc,argv,"v::p:h::t::"))!=-1){
+ int concurrent=0;
+ while((option=getopt(argc,argv,"v::p:h::t:"))!=-1){
   switch(option){
    case 'v':
     verbose =1;
@@ -45,6 +45,14 @@ int main(int argc,char **argv ){
   }
   if(optind<argc){
      trials = atoi(argv[optind]);
+     if(trials > 8){
+      trials = 8;
+      fprintf(stderr,"Tried to create more than 8 processes, enforcing restriction\n");
+     }
+     if(concurrent!=0&&trials > concurrent){//if concurrent option was selected and too many
+     	trials = concurrent;
+	fprintf(stderr,"You inputted more trials than you inputted concurrent, enforcing concurrent setting\n");
+     }
      if(trials==0){
        fprintf(stderr,"Invalid input: Enter a valid integer for the number of trials, greater than 0 at the end\n");
        return 1;
@@ -75,6 +83,7 @@ int main(int argc,char **argv ){
 		printf("PID %d returned %s.\n",peyed,reading_buf);
    }
    close(pype[0]);
+   if(concurrent==0)
    wait();
   }
 } 
