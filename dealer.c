@@ -11,17 +11,27 @@ int main(int argc,char **argv ){
  int verbose =0;
  int successes = 0;
  int pype[2];
+ int paasento;
  char *percent;
- while((option=getopt(argc,argv,"v::p:"))!=-1){
+ while((option=getopt(argc,argv,"v::p:h::"))!=-1){
   switch(option){
    case 'v':
     verbose =1;
     break;
    case 'p':
+   paasento = atoi(optarg);
+   if(paasento>100){
+	printf("Invalid input for percent, number must be an integer between 0 and 100\n");
+	return 1;
+   }else{
     percent = optarg;
+    }
     break;
-   default:
-     printf("Invalid Syntax%d:\n",atoi(optarg));
+   case 'h':
+    printf("Use -v for verbose output, -p followed by an integer (0-100) percent probability. End output with the number of trials desired.\n");
+    return 1;
+   case '?':
+     printf("Invalid input, see -h for help on syntax\n");
      return 1;
     }
   }
@@ -30,7 +40,6 @@ int main(int argc,char **argv ){
    }else{
     return 1;
    }
- //printf("Percent:%s\%\t,Trials:%d\t,isVerbose:%d\n",percent,trials,verbose);
  printf("\n");
  for(i=0;i<trials;i++){
  if(pipe(pype)==-1){

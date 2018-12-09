@@ -46,7 +46,7 @@ int main(int argc,char **argv ){
  if(getRDM()<=percent)
   printf("Success");
  else
-  printf("Fail");
+  printf("Failure");
  finalizeTool();
  exit(0);
 }
