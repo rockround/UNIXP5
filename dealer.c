@@ -11,7 +11,7 @@ int main(int argc,char **argv ){
  int verbose =0;
  int successes = 0;
  int pype[2];
- int paasento;
+ int paasento=-1;
  char *percent;
  int concurrent=0;
  while((option=getopt(argc,argv,"v::p:h::t:"))!=-1){
@@ -29,13 +29,13 @@ int main(int argc,char **argv ){
     }
     break;
    case 'h':
-    printf("Use -v for verbose output, -p followed by an integer (0-100) percent probability. End output with the number of trials desired.\n");
+    printf("Use -v for verbose output, -p followed by an integer (0-100) percent probability. End output with the number of trials desired, and optionally -t for from 1-8 concurrent processes.\n");
     return 1;
    case 't':
     concurrent=atoi(optarg);
     if(concurrent>8){
 	fprintf(stderr,"Maximum allowed processes is 8!\n");
-	return 1;
+	concurrent = 8;
     }
     break;
    case '?':
@@ -43,6 +43,10 @@ int main(int argc,char **argv ){
      return 1;
     }
   }
+  if(paasento == -1){
+	fprintf(stderr,"Please include the percent parameter after -p as an integer between 0 and 100\n");
+	return 1;
+}
   if(optind<argc){
      trials = atoi(argv[optind]);
      if(trials > 8){
